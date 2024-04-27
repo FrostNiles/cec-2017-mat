@@ -1,0 +1,6 @@
+#ignore /__pycache__/
+/__pycache__/
+/.vscode/
+
+/test_data/*
+!/test_data/result/
