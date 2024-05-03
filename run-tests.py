@@ -46,7 +46,11 @@ eightDigits = after[:8]
 lastTwoDigits = after[-2:]
 
 while int(eightDigits) == 0:
-    runpy.run_path('./delete-floating-point.py')
+    try:
+        runpy.run_path('./delete-floating-point.py')
+    except Exception as e:
+        print('Error:', e)
+        raise Exception("Stopping execution of run-tests.py")
     run_main(eng)
     with open(f'test_data/current_result_{argNum}.txt', 'r') as file:
         result = file.read()
@@ -131,6 +135,8 @@ lastTwoDigits = after[-2:]
 
 
 
+counter = 0
+
 while int(eightDigits) > 0 or int(lastTwoDigits) < 96:
     
     runpy.run_path('./help-bisecting.py')
@@ -153,6 +159,9 @@ while int(eightDigits) > 0 or int(lastTwoDigits) < 96:
 
     eightDigits = after[:8]
     lastTwoDigits = after[-2:]
+    counter += 1
+    if counter == 50:
+        raise Exception("Stopping execution of run-tests.py")
 
 
 #open the shift_data_1.txt and read the data
