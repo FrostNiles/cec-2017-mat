@@ -1,4 +1,5 @@
 import sys
+import runpy
 import re
 from run_matlab import run_main
 # Read the numbers from the file
@@ -8,15 +9,15 @@ number_of_element = int(sys.argv[3]) - 1
 
 with open(f'test_data/result/result_data_{argNum}_dim_{dimension}_number_of_element_{number_of_element+1}.txt', 'r') as file:
     lines = file.readlines()
+print("lines", lines)
 if len(lines) < 3:
-    raise Exception("Stopping execution of deviation.py because the number of lines in the file is less than 3.")
+    raise Exception("Stopping execution of anomaly-deviation.py because the number of lines in the file is less than 3.")
 # Extract the numbers from the lines
 number1 = float(lines[1])
 number2 = float(lines[2])
 
 # Calculate the deviation
 deviation = abs(number1 - number2)
-#deviation = 4.881784197001252e-16 
 
 #now I want to test the deviation with the original data
 # Read the original numbers
@@ -112,7 +113,7 @@ if int(eightDigits) > 0:
         
 else:
     if int(lastTwoDigits) < 96:
-        while int(lastTwoDigits) < 96:
+        while int(eightDigits) == 0 and int(lastTwoDigits) < 96:
             backup_deviation = deviation
             deviation = str(deviation)
             deviation = deviation.split('.')
@@ -157,25 +158,13 @@ else:
             # Now I want to get the first 8 digits from after
             eightDigits = after[:8]
             lastTwoDigits = after.split('\'')[0][-2:]
+            
 
-""" deviation = 4.440377947001253e-16
-backup_deviation = 4.441354509501254e-16 """
 middle = (backup_deviation + deviation) / 2
-
-
-""" print(middle)
-print(backup_deviation)
-print(deviation) """
-
-""" 4.381784197001252e-16
-4.881784197001252e-16
-3.881784197001252e-16 """
-
-
 original_numbers = [float(i) for i in original_data.split()]
-
+ 
 original_numbers[number_of_element] = original_numbers[number_of_element] - middle
-
+ 
 with open(f'test_data/shift_data_{argNum}.txt', 'w') as file:
     for number in original_numbers:
         file.write(f"{number} ")
@@ -208,21 +197,23 @@ lastTwoDigits = after.split('\'')[0][-2:]
 counter = 0
 
 while int(eightDigits) != 0 or int(lastTwoDigits) < 96:
-    if int(eightDigits) == 0:
-        deviation = middle
+    if int(eightDigits) != 0:
+        backup_deviation = middle
     else:
         if int(lastTwoDigits) < 96:
-            backup_deviation = middle
+            deviation = middle
+        else:
+            print("eightDigits is equal to 0 and lastTwoDigits is greater than 96")
     middle = (backup_deviation + deviation) / 2
     original_numbers = [float(i) for i in original_data.split()]
 
     original_numbers[number_of_element] = original_numbers[number_of_element] - middle
-
+ 
     with open(f'test_data/shift_data_{argNum}.txt', 'w') as file:
         for number in original_numbers:
             file.write(f"{number} ")
 
-    run_main(eng)
+    
 
     with open(f'test_data/current_result_{argNum}.txt', 'r') as file:
             result = file.read()
@@ -244,14 +235,30 @@ while int(eightDigits) != 0 or int(lastTwoDigits) < 96:
 
     # Now I want to get the first 8 digits from after
     eightDigits = after[:8]
-
-    if deviation == backup_deviation:
-        print("deviation is equal to backup_deviation")
-        raise Exception("Stopping execution of deviation.py because the deviation is equal to the backup_deviation.")
     lastTwoDigits = after.split('\'')[0][-2:]
+    
+    if deviation == backup_deviation:
+        deviation = lastDeviation
+        with open(f'test_data/result/result_data_{argNum}_dim_{dimension}_number_of_element_{number_of_element+1}.txt', 'w') as file:
+            file.write("deviation:")
+            file.write(deviation)
+        raise Exception("Stopping execution of anomaly-deviation.py because the deviation is the same as the backup deviation.")
+    if int(eightDigits) == 0:
+        lastDeviation = str(middle)
     if int(eightDigits) == 0 and counter >= 50:
         deviation = str(middle)
         with open(f'test_data/result/result_data_{argNum}_dim_{dimension}_number_of_element_{number_of_element+1}.txt', 'w') as file:
             file.write("deviation:")
             file.write(deviation)
-        raise Exception("Stopping execution of deviation.py because the deviation is counted.")
+        raise Exception("Stopping execution of anomaly-deviation.py because the deviation is the same as the backup deviation.")
+    elif counter >= 100:
+        deviation = lastDeviation
+        with open(f'test_data/result/result_data_{argNum}_dim_{dimension}_number_of_element_{number_of_element+1}.txt', 'w') as file:
+            file.write("deviation:")
+            file.write(deviation)
+        raise Exception("Stopping execution of anomaly-deviation.py because the counter is greater than or equal to 100.")
+
+deviation = str(middle)
+with open(f'test_data/result/result_data_{argNum}_dim_{dimension}_number_of_element_{number_of_element+1}.txt', 'w') as file:
+            file.write("deviation:")
+            file.write(deviation)

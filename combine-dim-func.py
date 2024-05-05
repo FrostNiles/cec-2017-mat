@@ -4,7 +4,7 @@ import sys
 import matlab.engine
 
 eng = matlab.engine.start_matlab()
-for i in range(12, 31):
+for i in range(21, 31):
     # CEC 2022 has 12 functions
     if i == 2 or i == 9 or i == 27:
         continue
