@@ -1,8 +1,11 @@
 import sys
 import runpy
 import re
+from start_matlab import start_engine
 from run_matlab import run_main
+from end_matlab import end_engine
 # Read the numbers from the file
+
 argNum = sys.argv[1]
 dimension = sys.argv[2]
 number_of_element = int(sys.argv[3]) - 1
@@ -18,6 +21,7 @@ number2 = float(lines[2])
 
 # Calculate the deviation
 deviation = abs(number1 - number2)
+print("deviation", deviation)
 
 #now I want to test the deviation with the original data
 # Read the original numbers
