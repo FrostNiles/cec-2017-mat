@@ -44,6 +44,7 @@ after = result[1]
 # Now I want to get the first 8 digits from after
 eightDigits = after[:8]
 lastTwoDigits = after[-2:]
+counter_first = 0
 
 while int(eightDigits) == 0:
     try:
@@ -69,7 +70,8 @@ while int(eightDigits) == 0:
 
     eightDigits = after[:8]
     lastTwoDigits = after[-2:]
-    
+    if counter_first == 40:
+        raise Exception("Stopping execution of run-tests.py 40 iterations reached")
 
 with open(f'test_data/shift_data_{argNum}.txt', 'r') as file:
     data = file.read()
@@ -161,7 +163,11 @@ while int(eightDigits) > 0 or int(lastTwoDigits) < 96:
     lastTwoDigits = after[-2:]
     counter += 1
     if counter == 50:
-        raise Exception("Stopping execution of run-tests.py")
+        try:
+            runpy.run_path('./anomaly-deviation.py')
+        except Exception as e:
+            raise Exception("Stopping execution of run-tests.py")    
+        
 
 
 #open the shift_data_1.txt and read the data
