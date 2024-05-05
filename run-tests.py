@@ -43,6 +43,8 @@ after = result[1]
 
 # Now I want to get the first 8 digits from after
 eightDigits = after[:8]
+if int(eightDigits) != 0:
+    raise Exception(f"The default value is less than 10e-08. Function:{argNum}, Dimension:{dimension}, Element:{arg3}")
 lastTwoDigits = after[-2:]
 counter_first = 0
 
