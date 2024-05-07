@@ -42,13 +42,13 @@ before = result[0]
 after = result[1]
 
 # Now I want to get the first 8 digits from after
-eightDigits = after[:8]
-if int(eightDigits) != 0:
+sevenDigits = after[:7]
+if int(sevenDigits) != 0:
     raise Exception(f"The default value is less than 10e-08. Function:{argNum}, Dimension:{dimension}, Element:{arg3}")
 lastTwoDigits = after[-2:]
 counter_first = 0
 
-while int(eightDigits) == 0:
+while int(sevenDigits) == 0:
     try:
         runpy.run_path('./delete-floating-point.py')
     except Exception as e:
@@ -70,7 +70,7 @@ while int(eightDigits) == 0:
     #after the floating point
     after = result[1]
 
-    eightDigits = after[:8]
+    sevenDigits = after[:7]
     lastTwoDigits = after[-2:]
     counter_first += 1
     if counter_first == 40:
@@ -135,14 +135,14 @@ before = result[0]
 after = result[1]
 
 # Now I want to get the first 8 digits from after
-eightDigits = after[:8]
+sevenDigits = after[:7]
 lastTwoDigits = after[-2:]
 
 
 
 counter = 0
 
-while int(eightDigits) > 0 or int(lastTwoDigits) < 96:
+while int(sevenDigits) > 0 or int(lastTwoDigits) < 96:
     
     runpy.run_path('./help-bisecting.py')
     
@@ -162,7 +162,7 @@ while int(eightDigits) > 0 or int(lastTwoDigits) < 96:
     #after the floating point
     after = result[1]
 
-    eightDigits = after[:8]
+    sevenDigits = after[:7]
     lastTwoDigits = after[-2:]
     counter += 1
     if counter == 50:
@@ -200,7 +200,7 @@ after = result[1]
 
 
 # Now I want to get the first 8 digits from after
-eightDigits = after[:8]
+sevenDigits = after[:7]
 
 lastTwoDigits = after[-2:]
 tenDigits = after[:10]

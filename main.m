@@ -22,14 +22,14 @@ function main(func_num, n)
         for k = 1:1
             f = cec17_func(x(1:n), func_num);
             for j = 1:1
-                fprintf('f%d(x[%d]) = %.10f,\n', func_num, j, f(j));
+                fprintf('f%d(x[%d]) = %.9f,\n', func_num, j, f(j));
 
                 FileName = sprintf('test_data/current_result_%d.txt', func_num);
                 fileID = fopen(FileName, 'w+');
                 if fileID == -1
                     error('Error: Cannot open input file for reading');
                 end
-                fprintf(fileID, 'f%d(x[%d]) = %.10f,\n', func_num, j, f(j));
+                fprintf(fileID, 'f%d(x[%d]) = %.9f,\n', func_num, j, f(j));
                 fclose(fileID);
             end
         end
